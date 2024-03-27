@@ -9,16 +9,7 @@ import {
   testHandler,
   updateMeeting,
 } from "./handlers";
-
-class Meeting {
-  meetingId: string;
-  meetingName: string;
-  meetingDate: string;
-  meetingDescription: string;
-  meetingParticipants: string[];
-  createdAt: Date;
-  updatedAt: Date | null;
-}
+import { Meeting } from "./types";
 
 export const meetingStorage = StableBTreeMap<string, Meeting>(0);
 
