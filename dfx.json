@@ -1,10 +1,10 @@
 {
   "canisters": {
-    "message_board": {
+    "meeting_scheduler": {
       "type": "custom",
       "main": "src/index.ts",
       "candid": "src/index.did",
-      "build": "npx azle message_board",
+      "build": "npx azle meeting_scheduler",
       "ts": "src/index.ts",
       "wasm": ".azle/meeting_scheduler/meeting_scheduler.wasm",
       "gzip": true
