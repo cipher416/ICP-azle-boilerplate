@@ -1,99 +1,37 @@
-import { v4 as uuidv4 } from "uuid";
-
-import { Server, StableBTreeMap, ic } from "azle";
+import { Server, StableBTreeMap } from "azle";
 
 import express from "express";
+import {
+  addMeeting,
+  deleteMeeting,
+  getAllMeetings,
+  getMeetingById,
+  testHandler,
+  updateMeeting,
+} from "./handlers";
 
-class Message {
-  id: string;
-  title: string;
-  body: string;
-  attachmentURL: string;
+class Meeting {
+  meetingId: string;
+  meetingName: string;
+  meetingDate: string;
+  meetingDescription: string;
+  meetingParticipants: string[];
   createdAt: Date;
   updatedAt: Date | null;
 }
 
-const messagesStorage = StableBTreeMap<string, Message>(0);
+export const meetingStorage = StableBTreeMap<string, Meeting>(0);
 
 export default Server(() => {
   const app = express();
 
   app.use(express.json());
-
-  app.post("/messages", (req, res) => {
-    const message: Message = {
-      id: uuidv4(),
-      createdAt: getCurrentDate(),
-      ...req.body,
-    };
-
-    messagesStorage.insert(message.id, message);
-
-    res.json(message);
-  });
-
-  app.get("/messages", (req, res) => {
-    res.json(messagesStorage.values());
-  });
-
-  app.get("/messages/:id", (req, res) => {
-    const messageId = req.params.id;
-
-    const messageOpt = messagesStorage.get(messageId);
-
-    if ("None" in messageOpt) {
-      res.status(404).send(`the message with id=${messageId} not found`);
-    } else {
-      res.json(messageOpt.Some);
-    }
-  });
-
-  app.put("/messages/:id", (req, res) => {
-    const messageId = req.params.id;
-
-    const messageOpt = messagesStorage.get(messageId);
-
-    if ("None" in messageOpt) {
-      res
-        .status(400)
-        .send(
-          `couldn't update a message with id=${messageId}. message not found`
-        );
-    } else {
-      const message = messageOpt.Some;
-
-      const updatedMessage = {
-        ...message,
-        ...req.body,
-        updatedAt: getCurrentDate(),
-      };
-
-      messagesStorage.insert(message.id, updatedMessage);
-
-      res.json(updatedMessage);
-    }
-  });
-
-  app.delete("/messages/:id", (req, res) => {
-    const messageId = req.params.id;
-
-    const deletedMessage = messagesStorage.remove(messageId);
-
-    if ("None" in deletedMessage) {
-      res
-        .status(400)
-        .send(
-          `couldn't delete a message with id=${messageId}. message not found`
-        );
-    } else {
-      res.json(deletedMessage.Some);
-    }
-  });
+  app.get("/", testHandler);
+  app.post("/meetings", addMeeting);
+  app.get("/meetings", getAllMeetings);
+  app.get("/meetings/:id", getMeetingById);
+  app.put("/meetings/:id", updateMeeting);
+  app.delete("/messages/:id", deleteMeeting);
 
   return app.listen();
 });
-
-function getCurrentDate() {
-  const timestamp = new Number(ic.time());
-  return new Date(timestamp.valueOf() / 1000_000);
-}
