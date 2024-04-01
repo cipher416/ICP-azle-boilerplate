@@ -22,7 +22,7 @@ export default Server(() => {
   app.get("/meetings", getAllMeetings);
   app.get("/meetings/:id", getMeetingById);
   app.put("/meetings/:id", updateMeeting);
-  app.delete("/messages/:id", deleteMeeting);
+  app.delete("/meetings/:id", deleteMeeting);
 
   return app.listen();
 });
