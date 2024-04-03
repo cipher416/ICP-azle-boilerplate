@@ -5,6 +5,12 @@ import { getCurrentDate } from "./utils";
 import { meetingStorage } from ".";
 
 export function addMeeting(req: Request, res: Response) {
+  /**
+   * Adds a new meeting to the system.
+   *
+   * @param req - The request object.
+   * @param res - The response object.
+   */
   const message: Meeting = {
     meetingId: uuidv4(),
     createdAt: getCurrentDate(),
@@ -16,10 +22,22 @@ export function addMeeting(req: Request, res: Response) {
   res.json(message);
 }
 export function getAllMeetings(req: Request, res: Response) {
+  /**
+   * Retrieves all meetings from the system and sends them as a JSON response.
+   *
+   * @param req - The request object.
+   * @param res - The response object.
+   */
   res.json(meetingStorage.values());
 }
 
 export function getMeetingById(req: Request, res: Response) {
+  /**
+   * Retrieves a meeting by its ID from the system and sends it as a JSON response.
+   *
+   * @param req - The request object containing the meeting ID as a parameter.
+   * @param res - The response object used to send the meeting data or an error message.
+   */
   const meetingId = req.params.id;
 
   const meetingOpt = meetingStorage.get(meetingId);
@@ -32,6 +50,12 @@ export function getMeetingById(req: Request, res: Response) {
 }
 
 export function updateMeeting(req: Request, res: Response) {
+  /**
+   * Updates an existing meeting in the system.
+   *
+   * @param req - The request object containing the meeting ID as a parameter.
+   * @param res - The response object used to send the meeting data or an error message.
+   */
   const meetingId = req.params.id;
 
   const meetingOpt = meetingStorage.get(meetingId);
@@ -54,6 +78,12 @@ export function updateMeeting(req: Request, res: Response) {
 }
 
 export function deleteMeeting(req: Request, res: Response) {
+  /**
+   * Deletes an existing meeting from the system.
+   *
+   * @param req - The request object containing the meeting ID as a parameter.
+   * @param res - The response object used to send the meeting data or an error message.
+   */
   const meetingId = req.params.id;
 
   const deletedMeeting = meetingStorage.remove(meetingId);
@@ -66,5 +96,11 @@ export function deleteMeeting(req: Request, res: Response) {
 }
 
 export function testHandler(req: Request, res: Response) {
+  /**
+   * A test handler that returns a JSON response.
+   *
+   * @param req - The request object.
+   * @param res - The response object
+   */
   res.send("This canister is working properly.");
 }
