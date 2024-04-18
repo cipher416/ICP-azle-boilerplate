@@ -5,6 +5,7 @@ import {
   addMeeting,
   deleteMeeting,
   getAllMeetings,
+  getCurrentDateMeetings,
   getMeetingById,
   testHandler,
   updateMeeting,
@@ -22,7 +23,7 @@ export default Server(() => {
   app.get("/meetings", getAllMeetings);
   app.get("/meetings/:id", getMeetingById);
   app.put("/meetings/:id", updateMeeting);
-  app.delete("/messages/:id", deleteMeeting);
-
+  app.delete("/meetings/:id", deleteMeeting);
+  app.get("/today-meetings", getCurrentDateMeetings);
   return app.listen();
 });

@@ -31,6 +31,15 @@ export function getMeetingById(req: Request, res: Response) {
   }
 }
 
+export function getCurrentDateMeetings(req: Request, res: Response) {
+  const meetings = meetingStorage
+    .values()
+    .filter(
+      (meeting: Meeting) => new Date(meeting.meetingDate) == getCurrentDate()
+    );
+  res.json(meetings);
+}
+
 export function updateMeeting(req: Request, res: Response) {
   const meetingId = req.params.id;
 
